@@ -10,9 +10,15 @@
 <h2 th:text="${user.id == null} ? 'Добавить пользователя' : 'Редактировать пользователя'">Форма</h2>
 
 <!-- Динамически меняем URL: /save для создания, /update для редактирования -->
-<form th:action="@{|${user.id == null ? '/save' : '/update'}|}" th:object="${user}" method="post">
+<form th:action="${user.id == null ? '/users' : '/users/' + user.id}"
+      th:object="${user}"
+      method="post">
+
     <!-- Скрытое поле ID для корректного обновления -->
     <input type="hidden" th:field="*{id}" />
+
+
+    <input type="hidden" th:if="${user.id != null}" name="_method" value="put" />
 
     <label for="firstname">Имя:</label>
     <input type="text" id="firstname" th:field="*{firstName}" required />
@@ -31,7 +37,7 @@
 </form>
 
 <br/>
-<a th:href="@{/}">Назад к списку</a>
+<a th:href="@{/users}">Назад к списку</a>
 
 </body>
 </html>

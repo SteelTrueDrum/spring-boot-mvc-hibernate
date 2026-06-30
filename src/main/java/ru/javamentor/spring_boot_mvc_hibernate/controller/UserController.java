@@ -3,14 +3,12 @@ package ru.javamentor.spring_boot_mvc_hibernate.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.spring_boot_mvc_hibernate.model.User;
 import ru.javamentor.spring_boot_mvc_hibernate.service.UserService;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,6 +19,11 @@ public class UserController {
     }
 
     @GetMapping("/")
+    public String redirectToUsers() {
+        return "redirect:/users";
+    }
+
+    @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
@@ -32,30 +35,29 @@ public class UserController {
         return "user-form";
     }
 
-    @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    @GetMapping("{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "user-form";
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    @PutMapping("/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") User user) {
         userService.updateUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    // Метод удаления использует POST, что защищает от случайных удалений поисковыми роботами.
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam("id") Long id) {
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
 }
