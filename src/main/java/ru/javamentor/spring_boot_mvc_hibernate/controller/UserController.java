@@ -18,10 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String redirectToUsers() {
-        return "redirect:/users";
-    }
 
     @GetMapping
     public String listUsers(Model model) {
@@ -35,7 +31,7 @@ public class UserController {
         return "user-form";
     }
 
-    @GetMapping("{id}/edit")
+    @GetMapping("/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);

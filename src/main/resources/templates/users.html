@@ -47,7 +47,7 @@
         <td th:text="${user.email}">Email</td>
         <td class="actions">
 
-            <a th:href="@{/users/{id}/edit(id=${user.id})}">Редактировать</a>
+            <a th:href="@{/users/{id}(id=${user.id})}">Редактировать</a>
 
 
             <form th:action="@{/users/{id}(id=${user.id})}" method="post" style="display:inline;">
